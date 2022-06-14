@@ -1,0 +1,111 @@
+:root {
+
+    --font: "Bebas Neue", cursive;
+
+    --light-grey: rgb(227, 227, 227); /* Light Grey */
+    --dark-grey: rgb(18, 18, 18);    /* Dark Grey  */
+    --light-pink: rgb(255, 114, 196);    /* Light Pink */
+
+}
+
+html, body {
+
+    font-family: var(--font);
+    color: var(--light-grey);
+    background: var(--dark-grey);
+    overflow: hidden;
+    flex-direction: column;
+
+}
+
+canvas { top: 13%; bottom: 5%; z-index: 10; }
+
+@keyframes _slide_right {
+
+    0% { left: -200%; }
+    10% { left: -100%; }
+    100% { left: 1%; }
+
+}
+
+.slide_right {
+
+    position: absolute;
+    top: 0.8%;
+    left: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: _slide_right 3s;
+
+}
+
+@keyframes _slide_in {
+
+    0% { bottom: -200%; }
+    10% { bottom: -100%; }
+    100% { bottom: 5%; }
+
+}
+
+.slide_in {
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    animation: _slide_in 3s;
+
+}
+
+@keyframes _slide_down {
+
+    0% { top: -200%; }
+    10% { top: -100%; }
+    100% { top: 1%; }
+
+}
+
+button { transition-duration: 0.4s; }
+
+button:hover { background-color: var(--light-pink); }
+
+input, button { background-color: var(--light-grey); border: 0; }
+
+input:focus { outline: none; }
+
+.slide_down {
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    animation: _slide_down 5s;
+
+}
+
+.top_left { position: absolute; top: 0.8%; left: 1%; }
+
+.padded { padding: 1%; }
+
+.squircle  { border-radius: 30px; }
+
+.centered { text-align: center; align-items: center; margin: auto; display: flex; justify-content: center; }
+
+.large { font-family: var(--font); font-size: 300%; }
+
+.medium { font-family: var(--font); font-size: 38%; }
+
+.glowing { text-shadow: 0 0 10px rgba(227, 227, 227, 0.6); }
+
+._glowing { box-shadow: 0 0 10px rgba(227, 227, 227, 0.6); }
+
+.right_rounded { border-top-right-radius: 15px; border-bottom-right-radius: 15px; }
+
+.left_rounded { border-top-left-radius: 15px; border-bottom-left-radius: 15px; }
+
+.stretched { width: 45%; }
+
+.squished { width: 13%; }

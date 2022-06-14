@@ -1,0 +1,108 @@
+<!DOCTYPE html> <html leng = "en">
+
+<!-- If you're seeing this, hello! Here, you can see the inner workings of my website. -->
+
+<head>
+
+<!------------------------------------------------------------------------------------------------------>
+
+    <!-- Website tab stuff -->
+
+    <!-- Tab title -->
+    <title> Chess! </title>
+
+    <!-- My handmade icon! -->
+    <link rel = "icon" 
+            href = "assets/black_knight.png">
+
+
+<!------------------------------------------------------------------------------------------------------>
+
+    <!-- All imports here -->
+
+    <!-- Cool fonts from Google Fonts -->
+    <link rel = "preconnect" 
+            href = "https://fonts.gstatic.com">
+    <link href = "https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" 
+            rel = "stylesheet">
+
+    <!-- CSS Stylesheet -->
+    <link rel = "stylesheet" 
+            type = "text/css" 
+            href = "styles.css" 
+            media = "screen"/>
+
+    <!-- jQuery! -->
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
+    
+    <script type = "text/javascript"> 
+
+        if (!window.console) console = { log: function() {} }; 
+
+    </script>
+
+    <!-- JavaScript Code -->
+    <script type = "text/javascript"
+            src = "js/engine.defs.js"
+            defer> </script>
+
+    <script type = "text/javascript"
+            src = "js/engine.io.js"
+            defer> </script>
+
+    <script type = "text/javascript"
+            src = "js/engine.board.js"
+            defer> </script>
+
+    <script type = "text/javascript"
+            src = "js/engine.gen.js"
+            defer> </script>
+
+    <script type = "text/javascript"
+            src = "js/engine.move.js"
+            defer> </script> 
+
+    <script type = "text/javascript"
+            src = "js/engine.gui.js"
+            defer> </script>
+
+    <script type = "text/javascript"
+            src = "js/engine.main.js"
+            defer> </script>
+
+   
+
+
+<!------------------------------------------------------------------------------------------------------>
+
+    <!-- Encoding -->
+    <meta charset  = "utf-8">
+
+</head>
+
+<body>
+
+    <header class = "slide_right large top_left padded glowing"> Chess Cracker 🧠 </header>
+
+    <canvas id = "canvas"
+            class = "slide_in centered _glowing squircle"
+            width = "800" 
+            height = "800"> </canvas>
+
+    <div id = "generated_fen"   
+            class = "large stretched slide_down centered padded glowing">
+
+        FEN Key:&nbsp&nbsp
+
+        <input type = "text"
+                id = "fenID"
+                class = "stretched padded medium left_rounded"
+                placeholder = "xxxxxxxx/xxxxxxxx/x/x/x/x/xxxxxxxx/xxxxxxxx x xxxx - x x"/>
+
+        <button type = "button"
+                id = "set_to_fen"
+                class = "squished padded medium right_rounded"> Set FEN </button>
+
+    </div>
+
+</body>
