@@ -193,6 +193,25 @@ function square_120(square_64) { return square_64_to_square_120[(square_64)]; }
 
 function piece_index(piece, piece_number) { return (piece * 10 + piece_number); }
 
+var kings = [pieces.wK, pieces.bK];
+
+var castle_perm = [
+
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 13, 15, 15, 15, 12, 15, 15, 14, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15,  7, 15, 15, 15,  3, 15, 15, 11, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15,
+    15, 15, 15, 15, 15, 15, 15, 15, 15, 15
+
+];
+
 function from_square(m) { return (m & 0x7F); }
 function to_square(m) { return ((m >> 7) & 0x7F); }
 function captured(m) { return ((m >> 14) & 0xF); }
@@ -200,18 +219,16 @@ function promoted_piece(m) { return ((m >> 20) & 0xF); }
 
 var move_flag_en_passant = 0x40000;
 var move_flag_pawn_start = 0x80000;
-var move_flag_castling = 0x100000;
+var move_flag_castling = 0x1000000;
 var move_flag_capture = 0x7C000;
 var move_flag_promoted = 0xF00000;
 var no_move = 0;
 
 function square_off_board (square) {
 
-    if (files_board[square] == squares.off_board ? bool.true : bool.false);
+    if (files_board[square] == squares.off_board) { return bool.true; }
 
-    // if (files_board[square] == squares.off_board) { return bool.true; }
-
-    // return bool.false;
+    return bool.false;
 
  }
 

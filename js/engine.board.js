@@ -46,9 +46,9 @@ var gameboard = {};
 gameboard.pieces = new Array(board_square_number);
 gameboard.side = colors.white;
 gameboard.move_rule = 0;
-gameboard.history = [];
 gameboard.history_play = 0;
-gameboard.last = 0;
+gameboard.history = [];
+// gameboard.last = 0;
 gameboard.play = 0;
 gameboard.en_passant = 0;
 gameboard.castle_perm = 0;
@@ -447,7 +447,7 @@ function square_attacked(square, side) {
 
     } else {
 
-        if (gameboard.pieces[square + 11] == piece.bP || gameboard.pieces[square + 9] == piece.bP) {
+        if (gameboard.pieces[square + 11] == pieces.bP || gameboard.pieces[square + 9] == pieces.bP) {
             return bool.true;
         }
 

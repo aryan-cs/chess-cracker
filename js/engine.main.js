@@ -5,8 +5,13 @@ $(function () {
     parse_fen(starting_fen);
     print_board();
     generate_moves();
-    print_move_list();
     check_board();
+    make_move(gameboard.move_list[0]);
+    print_board();
+    check_board();
+    take_move()
+    print_board()
+    check_board()
 
 });
 
@@ -87,6 +92,24 @@ function init_square_conversion() {
 
 }
 
+function init_board_vars () {
+
+    var index = 0;
+    for (index = 0; index < max_game_moves; ++index) {
+
+        gameboard.history.push({
+
+            move: no_move,
+            castle_perm: 0,
+            en_passant: 0,
+            move_rule: 0,
+            position_key: 0
+
+        });
+
+    }
+}
+
 function init() {
 
     console.log("Initializing...");
@@ -94,5 +117,6 @@ function init() {
     init_files_and_ranks_board();
     init_hash();
     init_square_conversion();
+    init_board_vars();
 
 }

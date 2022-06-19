@@ -13,8 +13,6 @@ function print_move (move) {
     var ft = files_board[to_square(move)]; // file to
     var rt = ranks_board[to_square(move)]; // rank to
 
-    // console.log("ff", ff, "rf", rf, "ft", ft, "rt", rt);
-
     move_string = file_characters[ff] + rank_characters[rf] + file_characters[ft] + rank_characters[rt];
 
     var promoted = promoted_piece(move);
@@ -52,28 +50,11 @@ function print_move_list () {
 
     var index, move;
 
-    // kinda hacky, idk why this is needed
-    // problem with gameboard.move_list having random numbers
-
-    normal = [];
-
-    for (index = gameboard.move_list_start[gameboard.play]; index < gameboard.move_list_start[gameboard.play + 1] && normal.length <= 19; ++index) {
-
-        move = gameboard.move_list[index];
-
-        if (print_move(move) != "undefined") { normal.push(move); }
-
-    }
-
-    gameboard.move_list = new Array(max_depth * max_position_moves);
-
-    for (item = 0; item < normal.length; item++) { gameboard.move_list[item] = normal[item] }
-
     for (index = gameboard.move_list_start[gameboard.play]; index < gameboard.move_list_start[gameboard.play + 1]; ++index) {
 
         move = gameboard.move_list[index];
 
-        if (print_move(move) != "undefined") { console.log(print_move(move)); }
+        console.log(print_move(move));s
 
     }
 
