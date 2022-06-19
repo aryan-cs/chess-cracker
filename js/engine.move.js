@@ -71,7 +71,7 @@ function make_move (move) {
     var to = to_square(move);
     var side = gameboard.side;	
 
-	gameboard.history[gameboard.history_play].posKey = gameboard.posKey;
+	gameboard.history[gameboard.history_play].position_key = gameboard.position_key;
 
 	if ((move & move_flag_en_passant) != 0) {
 
@@ -93,7 +93,7 @@ function make_move (move) {
 		}
 	}
 	
-	if (gameboard.en_passant != squares.no_squareuare) { hash_en_passant(); }
+	if (gameboard.en_passant != squares.no_square) { hash_en_passant(); }
 
 	hash_castle();
 	
@@ -108,12 +108,12 @@ function make_move (move) {
     
     hash_castle();
     
-    var cap = captured  (move);
+    var cap = captured(move);
     gameboard.move_rule++;
     
-    if(cap != pieces.empty) {
+    if (cap != pieces.empty) {
 
-        clear_piece (to);
+        clear_piece(to);
         gameboard.move_rule = 0;
 
     }

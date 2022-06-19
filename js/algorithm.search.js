@@ -23,7 +23,7 @@ function clear_pv_table () {
 
 }
 
-function check_up () { if (($.now() - search_controller.start ) > search_controller.time) { search_controller.stop == bool.true; } }
+function check_up () { if (($.now() - search_controller.start) > search_controller.time) { search_controller.stop == bool.true; } }
 
 function is_repitition () {
 
@@ -41,15 +41,15 @@ function is_repitition () {
 
 function alpha_beta (alpha, beta, depth) {
 
+	search_controller.nodes++;
+
 	if (depth <= 0) { return evaluate_position(); }
 	
-	if ((search_controller.nodes & 2047) == 0) { CheckUp(); }
-	
-	search_controller.nodes++;
+	if ((search_controller.nodes & 2047) == 0) { check_up(); }
 	
 	if ((is_repitition() || gameboard.move_rule >= 100) && gameboard.play != 0) { return 0; }
 	
-	if (gameboard.play > max_depth -1) { return evaluate_position(); }
+	if (gameboard.play > max_depth - 1) { return evaluate_position(); }
 	
     var in_check = square_attacked(gameboard.piece_list[piece_index(kings[gameboard.side], 0)], gameboard.side ^ 1);
 
@@ -59,7 +59,7 @@ function alpha_beta (alpha, beta, depth) {
 	
 	generate_moves();
 	
-	print_move_list();
+	// print_move_list();
 	
 	var move_number = 0;
 	var legal_moves = 0;
@@ -67,18 +67,13 @@ function alpha_beta (alpha, beta, depth) {
 	var best_move = no_move;
 	var move = no_move;
 	
-	/* Get PvMove */
-	/* Order PvMove */	
-	
 	for (move_number = gameboard.move_list_start[gameboard.play]; move_number < gameboard.move_list_start[gameboard.play + 1]; ++move_number) {
-	
-		/* Pick Next Best Move */
 		
 		move = gameboard.move_list[move_number];	
 
 		if (make_move(move) == bool.false) { continue; }		
 		legal_moves++;
-		score = -alpha_beta( -beta, -alpha, depth - 1);
+		score = -alpha_beta(-beta, -alpha, depth - 1);
 		
 		take_move();
 		
@@ -90,7 +85,6 @@ function alpha_beta (alpha, beta, depth) {
 
 				if (legal_moves == 1) { search_controller.fail_high_first++; }
 				search_controller.fail_high++;				
-				/* Update Killer Moves */
 				
 				return beta;
 
@@ -98,7 +92,6 @@ function alpha_beta (alpha, beta, depth) {
 
 			alpha = score;
 			best_move = move;
-			/* Update History Table */
 
 		}
 
@@ -110,9 +103,7 @@ function alpha_beta (alpha, beta, depth) {
         else { return 0; }
 
     }
-	
-	/* Mate Check */
-	
+		
 	if (alpha != old_alpha) { store_pv_move(best_move); }
 	
 	return alpha;
@@ -123,7 +114,7 @@ function clear_for_search () {
 
     var index = 0, index2 = 0;
 
-    for (index = 0; index < 14; ++index) {
+    for (index = 0; index < 14 * board_square_number; ++index) {
 
         gameboard.search_history[index] = 0;
 
@@ -150,18 +141,32 @@ function search_position () {
 	var best_move = no_move;
 	var best_score = -infinity;
 	var current_depth = 0;
+	var pv_number;
+	var move_message;
 
     clear_for_search();
 	
-	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 1; ++current_depth) {
+	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 5; ++current_depth) {
 		
-		/* AB */
+		best_score = alpha_beta(-infinity, infinity, current_depth);
 		
-		if (search_controller.stop == bool.true) {
+		if (search_controller.stop == bool.true) { break; }
 
-			break;
+		best_move = probe_pv_table();
+		move_message = "depth: " + current_depth +
+					   "\nbest move: " + print_move(best_move) +
+					   "\nscore: " + best_score +
+					   "\nnodes: " + search_controller.nodes;
 
-		}
+		pv_number = get_pv_line(current_depth);
+
+		move_message += "\npv: ";
+
+		for (index = 0; index < pv_number; ++index) { move_message += print_move(gameboard.pv_array[index]) + " "; }
+
+		move_message += "\ntime: " + (($.now() - search_controller.start) / 1000).toFixed(2) + " sec";
+
+		console.log(move_message);
 		
 	}
 	

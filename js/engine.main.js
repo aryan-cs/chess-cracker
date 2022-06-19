@@ -3,13 +3,6 @@ $(function () {
     init();
     console.log("Main initialization called...");
     parse_fen(starting_fen);
-    print_board();
-    generate_moves();
-    check_board();
-    make_move(gameboard.move_list[0]);
-    print_board();
-    check_board();
-    take_move()
     print_board()
     check_board()
 

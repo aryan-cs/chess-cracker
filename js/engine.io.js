@@ -31,7 +31,7 @@ function print_move (move) {
 
     }
 
-    if (ff > 99 || rf > 99 || ft > 99 || rt > 99) { return "undefined"; }
+    // if (ff > 99 || rf > 99 || ft > 99 || rt > 99) { return "undefined"; }
 
     else { return move_string; }
 

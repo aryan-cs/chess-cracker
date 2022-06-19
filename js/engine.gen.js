@@ -1,5 +1,26 @@
 console.log("Move generation script loaded...");
 
+function move_exists (move) {
+
+	generate_moves();
+
+	var index, move_found = no_move;
+
+	for (index = gameboard.move_list_start[gameboard.play]; index < gameboard.move_list_start[gameboard.play + 1]; ++index) {
+
+		move_found = gameboard.move_list[index];
+
+		if (make_move(move_found) == bool.false) { continue; }
+
+		take_move();
+		if (move == move_found) { return bool.true; }
+
+	}
+
+	return bool.false;
+
+}
+
 function move(from, to, captured, promoted, flag) {
 
     return (from | (to << 7) | (captured << 14) | (promoted << 20) | flag);

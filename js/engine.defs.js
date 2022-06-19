@@ -188,7 +188,7 @@ var piece_keys = new Array(14 * 20);
 var side_key;
 var castle_keys = new Array (16);
 
-var mirror_64 = [
+var mirror_64_table = [
 
     56,	57,	58,	59,	60,	61,	62,	63,
     48,	49,	50,	51,	52,	53,	54,	55,
@@ -208,6 +208,8 @@ function square_64(square_120) { return square_120_to_square_64[(square_120)]; }
 function square_120(square_64) { return square_64_to_square_120[(square_64)]; }
 
 function piece_index(piece, piece_number) { return (piece * 10 + piece_number); }
+
+function mirror_64 (square) { return mirror_64_table[(square)]; }
 
 var kings = [pieces.wK, pieces.bK];
 

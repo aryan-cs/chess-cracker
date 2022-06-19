@@ -64,7 +64,7 @@ function evaluate_position () {
     piece = pieces.wP;
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score += pawn_table[square_64(square)];
 
     }
@@ -72,7 +72,7 @@ function evaluate_position () {
     piece = pieces.bP;
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score -= pawn_table[mirror_64(square_64(square))];
 
     }
@@ -80,7 +80,7 @@ function evaluate_position () {
     piece = pieces.wN; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score += knight_table[square_64(square)];
 
     } 
@@ -88,7 +88,7 @@ function evaluate_position () {
     piece = pieces.bN; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score -= knight_table[mirror_64(square_64(square))];
          
     }  
@@ -96,7 +96,7 @@ function evaluate_position () {
     piece = pieces.wB; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score += bishop_table[square_64(square)];
 
     } 
@@ -104,7 +104,7 @@ function evaluate_position () {
     piece = pieces.bB; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score -= bishop_table[mirror_64(square_64(square))];
      
     }
@@ -112,7 +112,7 @@ function evaluate_position () {
     piece = pieces.wR; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score += rook_table[square_64(square)];
 
     } 
@@ -120,7 +120,7 @@ function evaluate_position () {
     piece = pieces.bR; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
         score -= rook_table[mirror_64(square_64(square))];
 
     }
@@ -128,8 +128,8 @@ function evaluate_position () {
     piece = pieces.wQ; 
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
-        score += rook_table[square_64(square)] / 2;
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
+        score += rook_table[square_64(square)];
 
     } 
     
@@ -137,15 +137,15 @@ function evaluate_position () {
     for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
 
-        square = gameboard.piece_list[piece_index(piece,piece_number)];
-        score -= rook_table[mirror_64(square_64(square))] / 2;
+        square = gameboard.piece_list[piece_index(piece, piece_number)];
+        score -= rook_table[mirror_64(square_64(square))];
 
 
     } 
         
-    if (gameboard.piece_number[wB] >= 2) { score += bishop_pair; }
+    if (gameboard.piece_number[pieces.wB] >= 2) { score += bishop_pair; }
         
-    if (gameboard.piece_number[bB] >= 2) { score -= bishop_pair; }
+    if (gameboard.piece_number[pieces.bB] >= 2) { score -= bishop_pair; }
         
     if (gameboard.side == colors.white) { return score; }
 
