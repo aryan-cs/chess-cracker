@@ -21,19 +21,11 @@ function print_move (move) {
 
         var piece_character = "q";
 
-        if (piece_knight[promoted] == bool.true) {
-
-            piece_character = "n";
-
-        } else if (piece_rook_queen[promoted] == bool.true && piece_bishop_queen[promoted] == bool.false) {
-
-            piece_character = "r";
-
-        } else if (piece_rook_queen[promoted] == bool.false && piece_bishop_queen[promoted] == bool.true) {
-                
-            piece_character = "b";
-
-        }
+        if (piece_knight[promoted] == bool.true) { piece_character = "n"; }
+        
+        else if (piece_rook_queen[promoted] == bool.true && piece_bishop_queen[promoted] == bool.false) { piece_character = "r"; }
+        
+        else if (piece_rook_queen[promoted] == bool.false && piece_bishop_queen[promoted] == bool.true) { piece_character = "b"; }
 
         move_string += piece_character;
 

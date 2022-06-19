@@ -103,6 +103,9 @@ var bool = {
 var max_game_moves = 2048;
 var max_position_moves = 256;
 var max_depth = 64;
+var infinity = 30000;
+var mate = 29000;
+var pv_entries = 10000;
 
 var files_board = new Array (board_square_number);
 var ranks_board = new Array (board_square_number);
@@ -184,6 +187,19 @@ function generate_key() { return (Math.floor((Math.random() * 255) + 1) << 23) |
 var piece_keys = new Array(14 * 20);
 var side_key;
 var castle_keys = new Array (16);
+
+var mirror_64 = [
+
+    56,	57,	58,	59,	60,	61,	62,	63,
+    48,	49,	50,	51,	52,	53,	54,	55,
+    40,	41,	42,	43,	44,	45,	46,	47,
+    32,	33,	34,	35,	36,	37,	38,	39,
+    24,	25,	26,	27,	28,	29,	30,	31,
+    16,	17,	18,	19,	20,	21,	22,	23,
+    8,	9,	10,	11,	12,	13,	14,	15,
+    0,	1,	2,	3,	4,	5,	6,	7
+
+];
 
 var square_120_to_square_64 = new Array(board_square_number);
 var square_64_to_square_120 = new Array(64);

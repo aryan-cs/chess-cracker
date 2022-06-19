@@ -108,6 +108,17 @@ function init_board_vars () {
         });
 
     }
+
+    for (index = 0; index < pv_entries; ++index) {
+
+        gameboard.pv_table.push({
+
+            move: no_move,
+            position_key: 0,
+
+        });
+
+    }
 }
 
 function init() {

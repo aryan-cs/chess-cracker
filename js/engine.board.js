@@ -48,7 +48,6 @@ gameboard.side = colors.white;
 gameboard.move_rule = 0;
 gameboard.history_play = 0;
 gameboard.history = [];
-// gameboard.last = 0;
 gameboard.play = 0;
 gameboard.en_passant = 0;
 gameboard.castle_perm = 0;
@@ -59,6 +58,10 @@ gameboard.position_key = 0;
 gameboard.move_list = new Array(max_depth * max_position_moves);
 gameboard.move_scores = new Array(max_depth * max_position_moves);
 gameboard.move_list_start = new Array(max_depth);
+gameboard.pv_table = [];
+gameboard.pv_array = new Array(max_depth);
+gameboard.search_history = new Array(14 * board_square_number);
+gameboard.search_killers = new Array(3  * max_depth);
 
 // -----------------------------------------------------------------------
 

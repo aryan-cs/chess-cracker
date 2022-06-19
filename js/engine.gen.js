@@ -1,4 +1,4 @@
-console.log("move generation script loaded...");
+console.log("Move generation script loaded...");
 
 function move(from, to, captured, promoted, flag) {
 
