@@ -161,6 +161,18 @@ function alpha_beta (alpha, beta, depth) {
 	var old_alpha = alpha;
 	var best_move = no_move;
 	var move = no_move;
+
+	var pv_move = probe_pv_table();
+
+	if (pv_move != no_move) {
+
+		for (move_number = gameboard.move_list_start[gameboard.play]; move_number < gameboard.move_list_start[gameboard.play + 1]; ++move_number) {
+	
+			if (gameboard.move_list[move_number] == pv_move) { gameboard.move_scores[move_number] = 2000000; }
+
+		}
+
+	}
 	
 	for (move_number = gameboard.move_list_start[gameboard.play]; move_number < gameboard.move_list_start[gameboard.play + 1]; ++move_number) {
 		
@@ -181,9 +193,22 @@ function alpha_beta (alpha, beta, depth) {
 			if (score >= beta) {
 
 				if (legal_moves == 1) { search_controller.fail_high_first++; }
-				search_controller.fail_high++;				
+				search_controller.fail_high++;
+				
+				if ((move & move_flag_capture) == 0) {
+					
+					gameboard.search_killers[max_depth + gameboard.play] = gameboard.search_killers[gameboard.play];
+					gameboard.search_killers[gameboard.play] = move;
+				
+				}
 				
 				return beta;
+
+			}
+
+			if ((move & move_flag_capture) == 0) {
+
+				gameboard.search_history[gameboard.pieces[from_square(move)] * board_square_number + to_square(move)] += Math.pow(depth, 2);
 
 			}
 
@@ -243,7 +268,7 @@ function search_position () {
 
     clear_for_search();
 	
-	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 3; ++current_depth) {
+	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 6; ++current_depth) {
 		
 		best_score = alpha_beta(-infinity, infinity, current_depth);
 		
@@ -253,7 +278,7 @@ function search_position () {
 		move_message = "depth: " + current_depth +
 					   "\nbest move: " + print_move(best_move) +
 					   "\nscore: " + best_score +
-					   "\nnodes: " + search_controller.nodes;
+					   "\nnodes: " + search_controller.nodes.toLocaleString("en-US");
 
 		pv_number = get_pv_line(current_depth);
 

@@ -122,5 +122,6 @@ function init() {
     init_hash();
     init_square_conversion();
     init_board_vars();
+    init_mvv_lva();
 
 }

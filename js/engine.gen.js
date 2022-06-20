@@ -2,6 +2,25 @@ console.log("Move generation script loaded...");
 
 // work on MVV LVA (most valuable victim, least valuable attacker)
 
+var MVV_LVA_values = [0, 100, 200, 300, 400, 500, 600, 100, 200, 300, 400, 500, 600];
+var MVV_LVA_scores = new Array(14 * 14);
+
+function init_mvv_lva () {
+
+	var attacking_piece, victim_piece;
+	
+	for (attacking_piece = pieces.wP; attacking_piece <= pieces.bK; ++attacking_piece) {
+
+		for (victim_piece = pieces.wP; victim_piece <= pieces.bK; ++victim_piece) {
+
+			MVV_LVA_scores[victim_piece * 14 + attacking_piece] = MVV_LVA_values[victim_piece] + 6 - (MVV_LVA_values[attacking_piece] / 100);
+
+		}
+
+	}
+
+}
+
 function move_exists (move) {
 
 	generate_moves();
@@ -32,21 +51,41 @@ function move(from, to, captured, promoted, flag) {
 function add_capture_move (move) {
 
     gameboard.move_list[gameboard.move_list_start[gameboard.play + 1]] = move;
-    gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]++] = 0;
+    gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]++] = MVV_LVA_scores[captured(move) * 14 + gameboard.pieces[from_square(move)]] + 1000000;
 
 }
 
 function add_normal_move (move) {
 
     gameboard.move_list[gameboard.move_list_start[gameboard.play + 1]] = move;
-    gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]++] = 0;
+    gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]] = 0;
+
+	if (move == gameboard.search_killers[gameboard.play]) {
+
+		gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]] = 900000;
+
+	}
+
+	else if (move == gameboard.search_killers[gameboard.play + max_depth]) {
+
+		gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]] = 800000;
+
+	}
+
+	else if (move == gameboard.search_killers[gameboard.play + max_depth]) {
+
+		gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]] = gameboard.search_history[gameboard.pieces[from_square(move)] * board_square_number + to_square(move)];
+
+	}
+
+	gameboard.move_list_start[gameboard.play + 1]++;
 
 }
 
 function add_en_passant_move (move) {
 
     gameboard.move_list[gameboard.move_list_start[gameboard.play + 1]] = move;
-    gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]++] = 0;
+    gameboard.move_scores[gameboard.move_list_start[gameboard.play + 1]++] = 105 + 1000000;
 
 }
 

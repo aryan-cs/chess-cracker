@@ -1,38 +1,24 @@
 <!DOCTYPE html> <html leng = "en">
 
-<!-- If you're seeing this, hello! Here, you can see the inner workings of my website. -->
-
 <head>
 
-<!------------------------------------------------------------------------------------------------------>
+    <title> Chesser ♟️ </title>
 
-    <!-- Website tab stuff -->
-
-    <!-- Tab title -->
-    <title> Chess! </title>
-
-    <!-- My handmade icon! -->
     <link rel = "icon" 
-            href = "assets/black_knight.png">
+        href = "assets/black_knight.png">
 
 
-<!------------------------------------------------------------------------------------------------------>
-
-    <!-- All imports here -->
-
-    <!-- Cool fonts from Google Fonts -->
     <link rel = "preconnect" 
-            href = "https://fonts.gstatic.com">
+        href = "https://fonts.gstatic.com">
+
     <link href = "https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" 
-            rel = "stylesheet">
+        rel = "stylesheet">
 
-    <!-- CSS Stylesheet -->
     <link rel = "stylesheet" 
-            type = "text/css" 
-            href = "styles.css" 
-            media = "screen"/>
+        type = "text/css" 
+        href = "styles.css" 
+        media = "screen"/>
 
-    <!-- jQuery! -->
     <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"> </script>
     
     <script type = "text/javascript"> 
@@ -41,83 +27,110 @@
 
     </script>
 
-    <!-- JavaScript Code -->
     <script type = "text/javascript"
-            src = "js/engine.defs.js"
-            defer> </script>
-
-    <script type = "text/javascript"
-            src = "js/engine.io.js"
-            defer> </script>
+        src = "js/engine.defs.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/engine.board.js"
-            defer> </script>
+        src = "js/engine.io.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/engine.gen.js"
-            defer> </script>
+        src = "js/engine.board.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/engine.move.js"
-            defer> </script> 
+        src = "js/engine.gen.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/algorithm.evaluate.js"
-            defer> </script>
+        src = "js/engine.move.js"
+        defer> </script> 
 
     <script type = "text/javascript"
-            src = "js/algorithm.pvtable.js"
-            defer> </script>
+        src = "js/algorithm.evaluate.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/algorithm.search.js"
-            defer> </script>
+        src = "js/algorithm.pvtable.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/test.perft.js"
-            defer> </script>
+        src = "js/algorithm.search.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/engine.gui.js"
-            defer> </script>
+        src = "js/test.perft.js"
+        defer> </script>
 
     <script type = "text/javascript"
-            src = "js/engine.main.js"
-            defer> </script>
+        src = "js/engine.gui.js"
+        defer> </script>
 
-   
+    <script type = "text/javascript"
+        src = "js/engine.main.js"
+        defer> </script>
 
-
-<!------------------------------------------------------------------------------------------------------>
-
-    <!-- Encoding -->
     <meta charset  = "utf-8">
 
 </head>
 
 <body>
 
-    <header class = "slide_right large top_left padded glowing"> Chess Cracker 🧠 </header>
+    <header class = "slide_right large top_left padded"> Chesser.js ♟️ </header>
 
     <canvas id = "canvas"
-            class = "slide_in centered _glowing squircle"
-            width = "800" 
-            height = "800"> </canvas>
+        class = "slide_in glowing squircle"
+        width = "800" 
+        height = "800"> </canvas>
 
     <div id = "generated_fen"   
-            class = "large stretched slide_down centered padded glowing">
+        class = "slide_left large top_right padded stretched">
 
-        FEN Key:&nbsp&nbsp
+    <input type = "text"
+        id = "fenID"
+        class = "stretched padded medium right_rounded"
+        placeholder = "xxxxxxxx/xxxxxxxx/x/x/x/x/xxxxxxxx/xxxxxxxx x xxxx - x x"/>
 
-        <input type = "text"
-                id = "fenID"
-                class = "stretched padded medium left_rounded"
-                placeholder = "xxxxxxxx/xxxxxxxx/x/x/x/x/xxxxxxxx/xxxxxxxx x xxxx - x x"/>
+    <button type = "button"
+        id = "set_to_fen"
+        class = "squished padded medium left_rounded fen-button"> Set FEN </button>
+
+    <div class = "big glowing more-padding stats squircle" id = "stats_box">
+
+        <p id = "info">
+
+                depth: --
+                <br>
+                best move: --
+                <br>
+                score: --
+                <br>
+                nodes searched: --
+                <br>
+                principle variation: --
+                <br>
+                time: --
+                <br>
+                ordering efficiency: --
+
+        </p>
 
         <button type = "button"
-                id = "set_to_fen"
-                class = "squished padded medium right_rounded"> Set FEN </button>
+            id = "move_now"
+            class = "squished padded big left_rounded menu one"> move now </button>
+
+        <button type = "button"
+            id = "new_game"
+            class = "squished padded big menu two"> new game </button>
+
+        <button type = "button"
+            id = "flip_board"
+            class = "squished padded big menu three"> flip board </button>
+
+        <button type = "button"
+            id = "take_back"
+            class = "squished padded big right_rounded menu four"> take back </button>
 
     </div>
 
