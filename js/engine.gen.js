@@ -1,5 +1,7 @@
 console.log("Move generation script loaded...");
 
+// work on MVV LVA (most valuable victim, least valuable attacker)
+
 function move_exists (move) {
 
 	generate_moves();
@@ -344,6 +346,167 @@ function generate_moves () {
 		}
 
 		pce = loop_slide_pieces[p_index++];
+
+	}
+
+}
+
+function generate_captures () {
+
+	gameboard.move_list_start[gameboard.play + 1] = gameboard.move_list_start[gameboard.play];
+	
+	var piece_type, piece_number, square, p_index, piece, target_square, direction;
+	
+	if (gameboard.side == colors.white) {
+
+		piece_type = pieces.wP;
+		
+		for (piece_number = 0; piece_number < gameboard.piece_number[piece_type]; ++piece_number) {
+
+			square = gameboard.piece_list[piece_index(piece_type, piece_number)];				
+			
+			if (square_off_board(square + 9) == bool.false && piece_color[gameboard.pieces[square + 9]] == colors.black) {
+
+				add_white_pawn_capture_move(square, square + 9, gameboard.pieces[square + 9]);
+
+			}
+			
+			if (square_off_board(square + 11) == bool.false && piece_color[gameboard.pieces[square + 11]] == colors.black) {
+
+				add_white_pawn_capture_move(square, square + 11, gameboard.pieces[square + 11]);
+
+			}			
+			
+			if (gameboard.en_passant != squares.no_square) {
+
+				if (square + 9 == gameboard.en_passant) {
+
+					add_en_passant_move(move(square, square + 9, pieces.empty, pieces.empty, move_flag_en_passant));
+
+				}
+				
+				if (square + 11 == gameboard.en_passant) {
+
+					add_en_passant_move(move(square, square + 11, pieces.empty, pieces.empty, move_flag_en_passant));
+
+				}
+
+			}			
+			
+		}			
+
+	}
+	
+	else {
+
+		piece_type = pieces.bP;
+		
+		for (piece_number = 0; piece_number < gameboard.piece_number[piece_type]; ++piece_number) {
+
+			square = gameboard.piece_list[piece_index(piece_type, piece_number)];			
+			
+			if (square_off_board(square - 9) == bool.false && piece_color[gameboard.pieces[square - 9]] == colors.white) {
+
+				add_black_pawn_capture_move(square, square - 9, gameboard.pieces[square - 9]);
+
+			}
+			
+			if (square_off_board(square - 11) == bool.false && piece_color[gameboard.pieces[square - 11]] == colors.white) {
+
+				add_black_pawn_capture_move(square, square - 11, gameboard.pieces[square - 11]);
+
+			}			
+			
+			if (gameboard.en_passant != squares.no_square) {
+
+				if (square - 9 == gameboard.en_passant) {
+
+					add_en_passant_move(move(square, square - 9, pieces.empty, pieces.empty, move_flag_en_passant));
+
+				}
+				
+				if (square - 11 == gameboard.en_passant) {
+
+					add_en_passant_move(move(square, square - 11, pieces.empty, pieces.empty, move_flag_en_passant));
+
+				}
+
+			}
+
+		}	
+
+	}	
+	
+	p_index = loop_nonslide_index[gameboard.side];
+	piece = loop_nonslide_pieces[p_index++];
+	
+	while (piece != 0) {
+
+		for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
+
+			square = gameboard.piece_list[piece_index(piece, piece_number)];
+			
+			for (index = 0; index < direction_number[piece]; index++) {
+
+				direction = piece_direction[piece][index];
+				target_square = square + direction;
+				
+				if (square_off_board(target_square) == bool.true) { continue; }
+				
+				if (gameboard.pieces[target_square] != pieces.empty) {
+
+					if (piece_color[gameboard.pieces[target_square]] != gameboard.side) {
+
+						add_capture_move(move(square, target_square, gameboard.pieces[target_square], pieces.empty, 0));
+
+					}
+
+				}
+
+			}	
+
+		}	
+
+		piece = loop_nonslide_pieces[p_index++];
+
+	}
+	
+	p_index = loop_slide_index[gameboard.side];
+	piece = loop_slide_pieces[p_index++];
+	
+	while (piece != 0) {
+
+		for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
+
+			square = gameboard.piece_list[piece_index(piece, piece_number)];
+			
+			for (index = 0; index < direction_number[piece]; index++) {
+
+				direction = piece_direction[piece][index];
+				target_square = square + direction;
+				
+				while (square_off_board(target_square) == bool.false ) {	
+				
+					if (gameboard.pieces[target_square] != pieces.empty) {
+
+						if (piece_color[gameboard.pieces[target_square]] != gameboard.side) {
+
+							add_capture_move( move(square, target_square, gameboard.pieces[target_square], pieces.empty, 0));
+
+						}
+
+						break;
+
+					}
+
+					target_square += direction;
+				}
+
+			}	
+
+		}	
+
+		piece = loop_slide_pieces[p_index++];
 
 	}
 

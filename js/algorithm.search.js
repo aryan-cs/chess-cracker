@@ -12,6 +12,41 @@ search_controller.stop;
 search_controller.best;
 search_controller.thinking;
 
+function pick_next_move (move_number) {
+
+	var index = 0;
+	var best_score = -1;
+	var best_number = move_number;
+
+	for (index = move_number; index < gameboard.move_list_start[gameboard.play + 1]; ++index) {
+
+		if (gameboard.move_scores[index] > best_score) {
+
+			best_score = gameboard.move_scores[index];
+			best_number = index;
+
+		}
+
+	}
+
+	if (best_number != move_number) {
+
+		var switch_numbers;
+
+		switch_numbers = gameboard.move_scores[move_number];
+		gameboard.move_scores[move_number] = gameboard.move_scores[best_number];
+		gameboard.move_scores[best_number] = switch_numbers;
+
+		switch_numbers = gameboard.move_list[move_number];
+		gameboard.move_list[move_number] = gameboard.move_list[best_number];
+		gameboard.move_list[best_number] = switch_numbers;
+
+	}
+
+
+
+}
+
 function clear_pv_table () {
 
     for (index = 0; index < pv_entries; index++) {
@@ -39,11 +74,73 @@ function is_repitition () {
 
 }
 
+function quiescence (alpha, beta) {
+
+	if ((search_controller.nodes & 2047) == 0) { check_up(); }
+
+	search_controller.nodes++;
+
+	if ((is_repitition() || gameboard.move_rule >= 100) && gameboard.play != 0) { return 0; }
+
+	if (gameboard.play > max_depth - 1) { return evaluate_position(); }
+
+	var score = evaluate_position();
+
+	if (score >= beta) { return beta; } // do nothing
+
+	if (score > alpha) { alpha = score; }
+
+	generate_captures();
+		
+	var move_number = 0;
+	var legal_moves = 0;
+	var old_alpha = alpha;
+	var best_move = no_move;
+	var move = no_move;
+	
+	for (move_number = gameboard.move_list_start[gameboard.play]; move_number < gameboard.move_list_start[gameboard.play + 1]; ++move_number) {
+		
+		pick_next_move(move_number);
+
+		move = gameboard.move_list[move_number];	
+
+		if (make_move(move) == bool.false) { continue; }		
+		legal_moves++;
+		score = -quiescence(-beta, -alpha);
+		
+		take_move();
+		
+		if (search_controller.stop == bool.true) { return 0; }
+		
+		if (score > alpha) {
+
+			if (score >= beta) {
+
+				if (legal_moves == 1) { search_controller.fail_high_first++; }
+				search_controller.fail_high++;				
+				
+				return beta;
+
+			}
+
+			alpha = score;
+			best_move = move;
+
+		}
+
+	}
+
+	if (alpha != old_alpha) { store_pv_move(best_move); }
+	
+	return alpha;
+	
+}
+
 function alpha_beta (alpha, beta, depth) {
 
 	search_controller.nodes++;
 
-	if (depth <= 0) { return evaluate_position(); }
+	if (depth <= 0) { return quiescence(alpha, beta); }
 	
 	if ((search_controller.nodes & 2047) == 0) { check_up(); }
 	
@@ -58,9 +155,7 @@ function alpha_beta (alpha, beta, depth) {
 	var score = -infinity;
 	
 	generate_moves();
-	
-	// print_move_list();
-	
+		
 	var move_number = 0;
 	var legal_moves = 0;
 	var old_alpha = alpha;
@@ -69,6 +164,8 @@ function alpha_beta (alpha, beta, depth) {
 	
 	for (move_number = gameboard.move_list_start[gameboard.play]; move_number < gameboard.move_list_start[gameboard.play + 1]; ++move_number) {
 		
+		pick_next_move(move_number);
+
 		move = gameboard.move_list[move_number];	
 
 		if (make_move(move) == bool.false) { continue; }		
@@ -146,7 +243,7 @@ function search_position () {
 
     clear_for_search();
 	
-	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 5; ++current_depth) {
+	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 3; ++current_depth) {
 		
 		best_score = alpha_beta(-infinity, infinity, current_depth);
 		
@@ -160,11 +257,14 @@ function search_position () {
 
 		pv_number = get_pv_line(current_depth);
 
-		move_message += "\npv: ";
+		move_message += "\nprincipal variation: ";
 
 		for (index = 0; index < pv_number; ++index) { move_message += print_move(gameboard.pv_array[index]) + " "; }
 
 		move_message += "\ntime: " + (($.now() - search_controller.start) / 1000).toFixed(2) + " sec";
+
+		// measures how good move ordering is, number of times the beta cut off happened early
+		if (current_depth != 1) { move_message += "\nordering efficiency: " + ((search_controller.fail_high_first / search_controller.fail_high) * 100).toFixed(2) + "%"; }
 
 		console.log(move_message);
 		
