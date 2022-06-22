@@ -44,9 +44,9 @@ function set_pieces (div, square) {
 
 }
 
-function init_board() {
+function update_board () {
 
-    parse_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    // parse_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
     canv.fillStyle = light_grey;
     canv.fillRect(0, 0, board.width, board.height);

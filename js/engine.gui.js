@@ -6,5 +6,6 @@ $("#set_to_fen").click(function () {
     parse_fen(key);
     print_board();
     search_position();
+    update_board();
 
 });
