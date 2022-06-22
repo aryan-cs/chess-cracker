@@ -112,16 +112,19 @@ function init_board_vars () {
         });
 
     }
+
 }
 
 function init() {
 
     console.log("Initializing...");
-    init_board();
     init_files_and_ranks_board();
     init_hash();
     init_square_conversion();
     init_board_vars();
     init_mvv_lva();
+    init_board();
+
+    document.getElementById("fenID").value = starting_fen;
 
 }

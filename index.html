@@ -2,7 +2,7 @@
 
 <head>
 
-    <title> Chesser ♟️ </title>
+    <title> chesser.js ♟️ </title>
 
     <link rel = "icon" 
         href = "assets/black_knight.png">
@@ -84,53 +84,63 @@
         width = "800" 
         height = "800"> </canvas>
 
+    <div id = "squares_holder"
+        class = "slide_in"> </div>
+
     <div id = "generated_fen"   
-        class = "slide_left large top_right padded stretched">
+        class = "slide_left2 large top_right padded stretched">
 
-    <input type = "text"
-        id = "fenID"
-        class = "stretched padded medium right_rounded"
-        placeholder = "xxxxxxxx/xxxxxxxx/x/x/x/x/xxxxxxxx/xxxxxxxx x xxxx - x x"/>
-
-    <button type = "button"
-        id = "set_to_fen"
-        class = "squished padded medium left_rounded fen-button"> Set FEN </button>
-
-    <div class = "big glowing more-padding stats squircle" id = "stats_box">
-
-        <p id = "info">
-
-                depth: --
-                <br>
-                best move: --
-                <br>
-                score: --
-                <br>
-                nodes searched: --
-                <br>
-                principle variation: --
-                <br>
-                time: --
-                <br>
-                ordering efficiency: --
-
-        </p>
+        <input type = "text"
+            id = "fenID"
+            class = "stretched padded medium right_rounded"
+            placeholder = "xxxxxxxx/xxxxxxxx/x/x/x/x/xxxxxxxx/xxxxxxxx x xxxx - x x"/>
 
         <button type = "button"
-            id = "move_now"
-            class = "squished padded big left_rounded menu one"> move now </button>
+            id = "set_to_fen"
+            class = "squished padded medium left_rounded fen-button"> Set FEN </button>
 
-        <button type = "button"
-            id = "new_game"
-            class = "squished padded big menu two"> new game </button>
+    </div>
 
-        <button type = "button"
-            id = "flip_board"
-            class = "squished padded big menu three"> flip board </button>
+    <div>
 
-        <button type = "button"
-            id = "take_back"
-            class = "squished padded big right_rounded menu four"> take back </button>
+        <div class = "glowing stretched more-padding stats squircle slide_left1"
+            id = "stats_box">
+
+            <p id = "info">
+    
+                    depth: --
+                    <br>
+                    best move: --
+                    <br>
+                    score: --
+                    <br>
+                    nodes searched: --
+                    <br>
+                    principle variation: --
+                    <br>
+                    time: --
+                    <br>
+                    ordering efficiency: --
+    
+            </p>
+    
+            <button type = "button"
+                id = "move_now"
+                class = "squished padded big left_rounded menu one"> move now </button>
+    
+            <button type = "button"
+                id = "new_game"
+                class = "squished padded big menu two"> new game </button>
+    
+            <button type = "button"
+                id = "flip_board"
+                class = "squished padded big menu three"> flip board </button>
+    
+            <button type = "button"
+                id = "take_back"
+                class = "squished padded big right_rounded menu four"> take back </button>
+
+        </div>
 
     </div>
 

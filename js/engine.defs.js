@@ -204,10 +204,10 @@ var mirror_64_table = [
 var square_120_to_square_64 = new Array(board_square_number);
 var square_64_to_square_120 = new Array(64);
 
-function square_64(square_120) { return square_120_to_square_64[(square_120)]; }
-function square_120(square_64) { return square_64_to_square_120[(square_64)]; }
+function square_64 (square_120) { return square_120_to_square_64[(square_120)]; }
+function square_120 (square_64) { return square_64_to_square_120[(square_64)]; }
 
-function piece_index(piece, piece_number) { return (piece * 10 + piece_number); }
+function piece_index (piece, piece_number) { return (piece * 10 + piece_number); }
 
 function mirror_64 (square) { return mirror_64_table[(square)]; }
 
