@@ -35,8 +35,8 @@ function set_pieces (div, square) {
         file_name = "file" + (file + 1);
         file_name = "assets/" + side_characters[piece_color[piece]] + piece_characters[piece].toUpperCase() + ".png";
         
-        if (side_characters[piece_color[piece]] == "b") { image_url = "<img src = \"" + file_name + "\" + class = \"black_piece " + rank_name + " " + file_name + "\"> </img>"; }
-        else { image_url = "<img src = \"" + file_name + "\" + class = \"white_piece " + rank_name + " " + file_name + "\"> </img>"; }
+        if (side_characters[piece_color[piece]] == "w") { image_url = "<img src = \"" + file_name + "\" + class = \"white_piece " + rank_name + " " + file_name + "\"> </img>"; }
+        else { image_url = "<img src = \"" + file_name + "\" + class = \"black_piece " + rank_name + " " + file_name + "\"> </img>"; }
 
         $(div).append(image_url);
 
@@ -44,9 +44,9 @@ function set_pieces (div, square) {
 
 }
 
-function update_board () {
+function init_board () {
 
-    // parse_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+    parse_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 
     canv.fillStyle = light_grey;
     canv.fillRect(0, 0, board.width, board.height);
@@ -73,7 +73,7 @@ function update_board () {
 
             draw_rect(f * square.width, r * square.height, square.width, square.height);
 
-            set_pieces(square_div, ((f * 8) + r));
+            set_pieces(square_div, (64 - ((f + 1) * 8) + r));
 
             document.getElementById("squares_holder").appendChild(square_div);
             document.getElementById(square_div.id).appendChild(file_rank);
@@ -471,7 +471,7 @@ function print_square_attacked() {
 
             square = fr2sq(file, rank);
 
-            if (square_attacked(square, gameboard.side) == bool.true) { piece = "X"; }
+            if (square_attacked(square, gameboard.side ^ 1) == bool.true) { piece = "X"; }
             else { piece = "-"; }
             line += (" " + piece + " ")
 

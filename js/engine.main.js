@@ -124,6 +124,6 @@ function init() {
     init_square_conversion();
     init_board_vars();
     init_mvv_lva();
-    update_board();
+    init_board();
 
 }
