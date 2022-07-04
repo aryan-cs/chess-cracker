@@ -36,7 +36,7 @@ function set_pieces (div, square) {
         file_name = "assets/" + side_characters[piece_color[piece]] + piece_characters[piece].toUpperCase() + ".png";
         
         if (side_characters[piece_color[piece]] == "w") { image_url = "<img src = \"" + file_name + "\" + class = \"white_piece " + rank_name + " " + file_name + "\"> </img>"; }
-        else { image_url = "<img src = \"" + file_name + "\" + class = \"black_piece " + rank_name + " " + file_name + "\"> </img>"; }
+        else { image_url = "<img src = \"" + file_name + "\" + class = \"piece_div black_piece " + rank_name + " " + file_name + "\"> </img>"; }
 
         $(div).append(image_url);
 
@@ -76,7 +76,7 @@ function init_board () {
             set_pieces(square_div, (64 - ((f + 1) * 8) + r));
 
             document.getElementById("squares_holder").appendChild(square_div);
-            document.getElementById(square_div.id).appendChild(file_rank);
+            if (show_file_rank) { document.getElementById(square_div.id).appendChild(file_rank); }
 
             left += square.width;
 
@@ -116,19 +116,19 @@ gameboard.search_killers = new Array(3 * max_depth);
 
 // -----------------------------------------------------------------------
 
-function check_board() {
+function check_board () {
 
-    var target_piece_number = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
-    var target_material = [ 0, 0 ];
-    var square_64, target_piece, t_piece_number, square_120, color, piece_count;
+    var target_piece_number = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var target_material = [0, 0];
+    var square_64, target_piece, target_piece_number, square_120, color, piece_count;
 
     for (target_piece = pieces.wP; target_piece <= pieces.bK; ++target_piece) {
 
-        for (t_piece_number = 0; t_piece_number < gameboard.piece_number[ target_piece ]; ++t_piece_number) {
+        for (target_piece_index = 0; target_piece_index < gameboard.piece_number[target_piece]; ++target_piece_index) {
 
-            square_120 = gameboard.piece_list[ piece_index(target_piece, t_piece_number) ];
+            square_120 = gameboard.piece_list[piece_index(target_piece, target_piece_index)];
 
-            if (gameboard.pieces[ square_120 ] != target_piece) {
+            if (gameboard.pieces[square_120] != target_piece) {
 
                 console.log("Error in check_board");
                 return bool.false;
@@ -141,18 +141,17 @@ function check_board() {
 
     for (square_64 = 0; square_64 < 64; ++square_64) {
 
-        square_120 = square_64_to_square_120[ square_64 ];
-        target_piece = gameboard.pieces[ square_120 ];
-        target_piece_number[ target_piece ]++;
-        target_material[ piece_color[ target_piece ] ] += piece_value[ target_piece ];
+        square_120 = square_64_to_square_120[square_64];
+        target_piece = gameboard.pieces[square_120];
+        target_piece_number[target_piece]++;
+        target_material[piece_color[target_piece]] += piece_value[target_piece];
 
     }
 
     for (target_piece = pieces.wP; target_piece <= pieces.bK; ++target_piece) {
 
-        if (target_piece_number[ target_piece ] != gameboard.piece_number[ target_piece ]) {
+        if (target_piece_number[target_piece] != gameboard.piece_number[target_piece]) {
 
-            console.log(target_piece_number);
             console.log("Error in target_piece_number");
             return bool.false;
 
@@ -160,8 +159,8 @@ function check_board() {
 
     }
 
-    if (target_material[ colors.white ] != gameboard.material[ colors.white ] ||
-        target_material[ colors.black ] != gameboard.material[ colors.black ]) {
+    if (target_material[colors.white] != gameboard.material[colors.white] ||
+        target_material[colors.black] != gameboard.material[colors.black]) {
 
         console.log("Error in target_material");
         return bool.false;
@@ -186,7 +185,7 @@ function check_board() {
 
 }
 
-function print_board() {
+function print_board () {
 
     var square, file, rank, piece;
 
@@ -195,13 +194,13 @@ function print_board() {
 
     for (rank = ranks.rank_8; rank >= ranks.rank_1; rank--) {
 
-        var line = (rank_characters[ rank ] + " ¦");
+        var line = (rank_characters[rank] + " ¦");
 
         for (file = files.file_a; file <= files.file_h; file++) {
 
             square = fr2sq(file, rank);
-            piece = gameboard.pieces[ square ];
-            line += (" " + piece_characters[ piece ] + " ")
+            piece = gameboard.pieces[square];
+            line += (" " + piece_characters[piece] + " ")
 
         }
 
@@ -211,12 +210,12 @@ function print_board() {
 
     var line = "   ";
     for (file = files.file_a; file <= files.file_h; file++) {
-        line += (" " + file_characters[ file ] + " ");
+        line += (" " + file_characters[file] + " ");
     }
 
     console.log("  ╰------------------------╯");
     console.log(line);
-    console.log("Side: " + side_characters[ gameboard.side ]);
+    console.log("Side: " + side_characters[gameboard.side]);
     console.log("En Passant: " + gameboard.en_passant);
     line = "";
 
@@ -233,7 +232,7 @@ function print_board() {
 // -----------------------------------------------------------------------
 
 
-function generate_position_key() {
+function generate_position_key () {
 
     var square = 0;
     var final_key = 0;
@@ -241,11 +240,11 @@ function generate_position_key() {
 
     for (square = 0; square < board_square_number; ++square) {
 
-        piece = gameboard.pieces[ square ];
+        piece = gameboard.pieces[square];
 
         if (piece != pieces.empty && piece != squares.off_board) {
 
-            final_key ^= piece_keys[ (piece * 120) + square ];
+            final_key ^= piece_keys[(piece * 120) + square];
 
         }
 
@@ -253,9 +252,9 @@ function generate_position_key() {
 
     if (gameboard.side == colors.white) { final_key ^= side_key; }
 
-    if (gameboard.en_passant != squares.no_square) { final_key ^= piece_keys[ gameboard.en_passant ]; }
+    if (gameboard.en_passant != squares.no_square) { final_key ^= piece_keys[gameboard.en_passant]; }
 
-    final_key ^= castle_keys[ gameboard.castle_perm ];
+    final_key ^= castle_keys[gameboard.castle_perm];
 
     return final_key;
 
@@ -267,9 +266,9 @@ function print_piece_lists() {
 
     for (piece = pieces.wP; piece <= pieces.bK; ++piece) {
 
-        for (piece_number = 0; piece_number < gameboard.piece_number[ piece ]; ++piece_number) {
+        for (piece_number = 0; piece_number < gameboard.piece_number[piece]; ++piece_number) {
 
-            console.log("Piece: " + piece_characters[ piece ] + " on " + print_square(gameboard.piece_list[ piece_index(piece, piece_number) ]));
+            console.log("Piece: " + piece_characters[piece] + " on " + print_square(gameboard.piece_list[piece_index(piece, piece_number)]));
 
         }
 
@@ -281,23 +280,23 @@ function update_list() {
 
     var piece, square, index, color;
 
-    for (index = 0; index < 14 * 120; ++index) { gameboard.piece_list[ index ] = pieces.empty; }
+    for (index = 0; index < 14 * 120; ++index) { gameboard.piece_list[index] = pieces.empty; }
 
-    for (index = 0; index < 2; ++index) { gameboard.material[ index ] = 0; }
+    for (index = 0; index < 2; ++index) { gameboard.material[index] = 0; }
 
-    for (index = 0; index < 13; ++index) { gameboard.piece_number[ index ] = 0; }
+    for (index = 0; index < 13; ++index) { gameboard.piece_number[index] = 0; }
 
     for (index = 0; index < 64; ++index) {
 
         square = square_120(index);
-        piece = gameboard.pieces[ square ];
+        piece = gameboard.pieces[square];
 
         if (piece != pieces.empty) {
 
-            color = piece_color[ piece ];
-            gameboard.material[ color ] += piece_value[ piece ];
-            gameboard.piece_list[ piece_index(piece, gameboard.piece_number[ piece ]) ] = square;
-            gameboard.piece_number[ piece ]++;
+            color = piece_color[piece];
+            gameboard.material[color] += piece_value[piece];
+            gameboard.piece_list[piece_index(piece, gameboard.piece_number[piece])] = square;
+            gameboard.piece_number[piece]++;
 
         }
 
@@ -313,18 +312,18 @@ function reset_board() {
 
     var index = 0;
 
-    for (index = 0; index < board_square_number; ++index) { gameboard.pieces[ index ] = squares.off_board; }
+    for (index = 0; index < board_square_number; ++index) { gameboard.pieces[index] = squares.off_board; }
 
-    for (index = 0; index < 64; ++index) { gameboard.pieces[ square_120(index) ] = pieces.empty; }
+    for (index = 0; index < 64; ++index) { gameboard.pieces[square_120(index)] = pieces.empty; }
 
     gameboard.side = colors.both;
     gameboard.en_passant = squares.no_square;
     gameboard.move_rule = 0;
     gameboard.play = 0;
-    gameboard.last = 0;
+    gameboard.history_play = 0;
     gameboard.castle_perm = 0;
     gameboard.position_key = 0;
-    gameboard.move_list_start[ gameboard.play ] = 0;
+    gameboard.move_list_start[gameboard.play] = 0;
 
 }
 
@@ -346,7 +345,7 @@ function parse_fen (key) {
 
         count = 1;
 
-        switch (key[ fen_count ]) {
+        switch (key[fen_count]) {
 
             case "p":
                 piece = pieces.bP; break;
@@ -384,7 +383,7 @@ function parse_fen (key) {
             case "8":
 
                 piece = pieces.empty;
-                count = key[ fen_count ].charCodeAt() - "0".charCodeAt();
+                count = key[fen_count].charCodeAt() - '0'.charCodeAt();
                 break;
 
             case "/":
@@ -413,7 +412,7 @@ function parse_fen (key) {
 
     }
 
-    gameboard.side = (key[ fen_count ] == "w") ? colors.white : colors.black;
+    gameboard.side = (key[fen_count] == "w") ? colors.white : colors.black;
     fen_count += 2;
 
     for (x = 0; x < 4; x++) {
@@ -439,12 +438,12 @@ function parse_fen (key) {
 
     fen_count++;
 
-    if (key[ fen_count ] != "-") {
+    if (key[fen_count] != "-") {
 
-        file = key[ fen_count ].charCodeAt() - "a".charCodeAt();
-        rank = key[ fen_count + 1 ].charCodeAt() - "1".charCodeAt();
+        file = key[fen_count].charCodeAt() - "a".charCodeAt();
+        rank = key[fen_count + 1].charCodeAt() - "1".charCodeAt();
 
-        console.log("fen[fen_count]: " + key[ fen_count ] + " | File: " + file + " | Rank: " + rank);
+        console.log("fen[fen_count]: " + key[fen_count] + " | File: " + file + " | Rank: " + rank);
         gameboard.en_passant = fr2sq(file, rank);
 
     }
@@ -457,7 +456,7 @@ function parse_fen (key) {
 
 // -----------------------------------------------------------------------
 
-function print_square_attacked() {
+function print_square_attacked () {
 
     var square, file, rank, piece;
 
@@ -486,20 +485,20 @@ function print_square_attacked() {
 
 }
 
-function square_attacked(square, side) {
+function square_attacked (square, side) {
 
     var piece, target_square, index;
 
     // Pawns
     if (side == colors.white) {
 
-        if (gameboard.pieces[ square - 11 ] == pieces.wP || gameboard.pieces[ square - 9 ] == pieces.wP) {
+        if (gameboard.pieces[square - 11] == pieces.wP || gameboard.pieces[square - 9] == pieces.wP) {
             return bool.true;
         }
 
     } else {
 
-        if (gameboard.pieces[ square + 11 ] == pieces.bP || gameboard.pieces[ square + 9 ] == pieces.bP) {
+        if (gameboard.pieces[square + 11] == pieces.bP || gameboard.pieces[square + 9] == pieces.bP) {
             return bool.true;
         }
 
@@ -508,11 +507,11 @@ function square_attacked(square, side) {
     // Knight
     for (index = 0; index < 8; index++) {
 
-        piece = gameboard.pieces[ square + knight_direction[ index ] ];
+        piece = gameboard.pieces[square + knight_direction[index]];
 
         if (piece != squares.off_board &&
-            piece_color[ piece ] == side &&
-            piece_knight[ piece ] == bool.true) {
+            piece_color[piece] == side &&
+            piece_knight[piece] == bool.true) {
             return bool.true;
         }
 
@@ -521,22 +520,22 @@ function square_attacked(square, side) {
     // Rook
     for (index = 0; index < 4; ++index) {
 
-        direction = rook_direction[ index ];
+        direction = rook_direction[index];
         target_square = square + direction;
-        piece = gameboard.pieces[ target_square ];
+        piece = gameboard.pieces[target_square];
 
         while (piece != squares.off_board) {
 
             if (piece != pieces.empty) {
 
-                if (piece_rook_queen[ piece ] == bool.true && piece_color[ piece ] == side) { return bool.true; }
+                if (piece_rook_queen[piece] == bool.true && piece_color[piece] == side) { return bool.true; }
 
                 break;
 
             }
 
             target_square += direction;
-            piece = gameboard.pieces[ target_square ];
+            piece = gameboard.pieces[target_square];
 
         }
 
@@ -545,22 +544,22 @@ function square_attacked(square, side) {
     // Bishop
     for (index = 0; index < 4; ++index) {
 
-        direction = bishop_direction[ index ];
+        direction = bishop_direction[index];
         target_square = square + direction;
-        piece = gameboard.pieces[ target_square ];
+        piece = gameboard.pieces[target_square];
 
         while (piece != squares.off_board) {
 
             if (piece != pieces.empty) {
 
-                if (piece_bishop_queen[ piece ] == bool.true && piece_color[ piece ] == side) { return bool.true; }
+                if (piece_bishop_queen[piece] == bool.true && piece_color[piece] == side) { return bool.true; }
 
                 break;
 
             }
 
             target_square += direction;
-            piece = gameboard.pieces[ target_square ];
+            piece = gameboard.pieces[target_square];
 
         }
 
@@ -569,14 +568,14 @@ function square_attacked(square, side) {
     // King
     for (index = 0; index < 8; index++) {
 
-        piece = gameboard.pieces[ square + king_direction[ index ] ];
+        piece = gameboard.pieces[square + king_direction[index]];
 
         if (piece != squares.off_board &&
-            piece_color[ piece ] == side &&
-            piece_king[ piece ] == bool.true) { return bool.true; }
+            piece_color[piece] == side &&
+            piece_king[piece] == bool.true) { return bool.true; }
 
     }
 
-    bool.false;
+    return bool.false;
 
 }

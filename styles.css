@@ -103,7 +103,7 @@ canvas { top: 13%; bottom: 5%; z-index: 10; margin: auto; display: flex; justify
     position: absolute;
     top: 103%;
     display: inline-block;
-    transition: ease-in-out .1s;
+    transition: ease-in-out .25s;
 
 }
 
@@ -135,6 +135,12 @@ input { z-index: 2; }
 input, button { position: absolute; background-color: var(--light-grey); border: 0; margin: 0; padding: 5%; }
 
 input:focus { outline: none; }
+
+.darken {
+
+    opacity: 0.5;
+
+}
 
 #squares_holder {
 

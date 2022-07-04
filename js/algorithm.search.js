@@ -268,7 +268,7 @@ function search_position () {
 
     clear_for_search();
 	
-	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 6; ++current_depth) {
+	for (current_depth = 1; current_depth <= /*search_controller.depth*/ 3; ++current_depth) {
 		
 		best_score = alpha_beta(-infinity, infinity, current_depth);
 		

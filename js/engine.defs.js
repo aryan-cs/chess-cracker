@@ -1,5 +1,7 @@
 console.log("Setup script loaded...");
 
+var show_file_rank = false;
+
 var pieces = {
 
     empty : 0, // Empty
@@ -118,51 +120,51 @@ var rank_characters = "12345678";
 var file_characters = "abcdefgh";
 
 // Given file and rank, get square 
-function fr2sq(file, rank) { return ((21 + (file)) + (rank) * 10); }
+function fr2sq(file, rank) { return ((21 + (file)) + ((rank) * 10 )); }
 
 // Boolean values for piece positions based on value
-var piece_big = [ bool.false, bool.false, bool.true, bool.true, bool.true, 
+var piece_big = [bool.false, bool.false, bool.true, bool.true, bool.true, 
                   bool.true, bool.true, bool.false, bool.true, bool.true, 
-                  bool.true, bool.true, bool.true ];
+                  bool.true, bool.true, bool.true];
 
-var piece_maj = [ bool.false, bool.false, bool.false, bool.false, bool.true, 
+var piece_maj = [bool.false, bool.false, bool.false, bool.false, bool.true, 
                   bool.true, bool.true, bool.false, bool.false, bool.false, 
-                  bool.true, bool.true, bool.true ];
+                  bool.true, bool.true, bool.true];
 
-var piece_min = [ bool.false, bool.false, bool.true, bool.true, bool.false, 
+var piece_min = [bool.false, bool.false, bool.true, bool.true, bool.false, 
                   bool.false, bool.false, bool.false, bool.true, bool.true, 
-                  bool.false, bool.false, bool.false ];
+                  bool.false, bool.false, bool.false];
 
-var piece_value = [ 0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000 ];
+var piece_value = [0, 100, 325, 325, 550, 1000, 50000, 100, 325, 325, 550, 1000, 50000];
 
-var piece_color = [ colors.both, colors.white, colors.white, colors.white, 
+var piece_color = [colors.both, colors.white, colors.white, colors.white, 
                     colors.white, colors.white, colors.white, colors.black, 
                     colors.black, colors.black, colors.black, colors.black, 
-                    colors.black ];
+                    colors.black];
 	
-var piece_pawn = [ bool.false, bool.true, bool.false, bool.false, bool.false, 
+var piece_pawn = [bool.false, bool.true, bool.false, bool.false, bool.false, 
                    bool.false, bool.false, bool.true, bool.false, bool.false, 
-                   bool.false, bool.false, bool.false ];
+                   bool.false, bool.false, bool.false];
 
-var piece_knight = [ bool.false, bool.false, bool.true, bool.false, bool.false, 
+var piece_knight = [bool.false, bool.false, bool.true, bool.false, bool.false, 
                      bool.false, bool.false, bool.false, bool.true, bool.false, 
-                     bool.false, bool.false, bool.false ];
+                     bool.false, bool.false, bool.false];
 
-var piece_king = [ bool.false, bool.false, bool.false, bool.false, bool.false, 
+var piece_king = [bool.false, bool.false, bool.false, bool.false, bool.false, 
                    bool.false, bool.true, bool.false, bool.false, bool.false, 
-                   bool.false, bool.false, bool.true ];
+                   bool.false, bool.false, bool.true];
 
-var piece_rook_queen = [ bool.false, bool.false, bool.false, bool.false, 
+var piece_rook_queen = [bool.false, bool.false, bool.false, bool.false, 
                          bool.true, bool.true, bool.false, bool.false, bool.false, 
-                         bool.false, bool.true, bool.true, bool.false ];
+                         bool.false, bool.true, bool.true, bool.false];
 
-var piece_bishop_queen = [ bool.false, bool.false, bool.false, bool.true, 
+var piece_bishop_queen = [bool.false, bool.false, bool.false, bool.true, 
                            bool.false, bool.true, bool.false, bool.false, bool.false, 
-                           bool.true, bool.false, bool.true, bool.false ];
+                           bool.true, bool.false, bool.true, bool.false];
                     
-var piece_slides = [ bool.false, bool.false, bool.false, bool.true, bool.true, 
+var piece_slides = [bool.false, bool.false, bool.false, bool.true, bool.true, 
                      bool.true, bool.false, bool.false, bool.false, bool.true, 
-                     bool.true, bool.true, bool.false ];
+                     bool.true, bool.true, bool.false];
 
 var knight_direction = [-8, -19, -21, -12, 8, 19, 21, 12];
 var rook_direction = [-1, -10,	1, 10];
@@ -179,12 +181,12 @@ var loop_nonslide_index = [0, 3];
 var loop_slide_pieces = [pieces.wB, pieces.wR, pieces.wQ, 0, pieces.bB, pieces.bR, pieces.bQ, 0];
 var loop_slide_index = [0, 4];
                     
-function generate_key() { return (Math.floor((Math.random() * 255) + 1) << 23) | 
-                            (Math.floor((Math.random() * 255) + 1) << 16) | 
-                            (Math.floor((Math.random() * 255) + 1) << 8) | 
-                            Math.floor((Math.random() * 255) + 1); }
+function generate_key () { return (Math.floor((Math.random() * 255) + 1) << 23) | 
+                                 (Math.floor((Math.random() * 255) + 1) << 16) | 
+                                 (Math.floor((Math.random() * 255) + 1) << 8) | 
+                                  Math.floor((Math.random() * 255) + 1); }
 
-var piece_keys = new Array(14 * 20);
+var piece_keys = new Array(14 * 120);
 var side_key;
 var castle_keys = new Array (16);
 
@@ -230,10 +232,10 @@ var castle_perm = [
 
 ];
 
-function from_square(m) { return (m & 0x7F); }
-function to_square(m) { return ((m >> 7) & 0x7F); }
-function captured(m) { return ((m >> 14) & 0xF); }
-function promoted_piece(m) { return ((m >> 20) & 0xF); }
+function from_square    (m) { return ( m        & 0x7F); }
+function to_square      (m) { return ((m >> 7)  & 0x7F); }
+function captured       (m) { return ((m >> 14) & 0xF ); }
+function promoted_piece (m) { return ((m >> 20) & 0xF ); }
 
 var move_flag_en_passant = 0x40000;
 var move_flag_pawn_start = 0x80000;
@@ -248,12 +250,23 @@ function square_off_board (square) {
 
     return bool.false;
 
- }
+}
 
- function hash_piece (piece, square) { gameboard.position_key ^= piece_keys[(piece * 120) + square]; }
+function hash_piece (piece, square) { gameboard.position_key ^= piece_keys[(piece * 120) + square]; }
 
- function hash_castle () { gameboard.position_key ^= castle_keys[gameboard.castle_perm]; }
+function hash_castle () { gameboard.position_key ^= castle_keys[gameboard.castle_perm]; }
 
- function hash_side () { gameboard.position_key ^= side_key; }
+function hash_side () { gameboard.position_key ^= side_key; }
 
- function hash_en_passant () { gameboard.position_key ^= piece_keys[gameboard.en_passant_square]; }
+function hash_en_passant () { gameboard.position_key ^= piece_keys[gameboard.en_passant]; }
+
+var game_controller = {};
+game_controller.engine_side = colors.both;
+game_controller.player_side = colors.both;
+game_controller.game_over = bool.false;
+
+var user_move = {};
+user_move.from = squares.no_square;
+user_move.to = squares.no_square;
+
+var selected_square, selected_piece;

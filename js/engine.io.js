@@ -31,8 +31,6 @@ function print_move (move) {
 
     }
 
-    // if (ff > 99 || rf > 99 || ft > 99 || rt > 99) { return "undefined"; }
-
     else { return move_string; }
 
 
@@ -49,5 +47,51 @@ function print_move_list () {
         console.log(print_move(move));s
 
     }
+
+}
+
+function parse_move (from, to) {
+
+    generate_moves();
+	
+	var move = no_move;
+	var promo_piece = pieces.empty;
+	var found = bool.false;
+	
+	for (index = gameboard.move_list_start[gameboard.play]; index < gameboard.move_list_start[gameboard.play + 1]; ++index) {
+
+		move = gameboard.move_list[index];
+
+        console.log(move)
+
+		if (from_square(move) == from && to_square(move) == to) {
+
+			promo_piece = promoted_piece(move);
+
+			if (promo_piece != pieces.empty) {
+
+				if ((promo_piece == pieces.wQ && gameboard.side == colors.white)
+                 || (promo_piece == pieces.bQ && gameboard.side == colors.black)) { found = bool.true; break; }
+
+				continue;
+
+			}
+
+			found = bool.true; break;
+
+		}		
+
+	}
+	
+	if (found != bool.false) {
+        
+        if (make_move(move) == bool.false) { return no_move; }
+
+		take_move();
+		return move;
+
+	}
+	
+	return no_move;
 
 }
